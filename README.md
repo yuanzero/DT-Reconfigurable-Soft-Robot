@@ -11,7 +11,7 @@ For the users:
 
     ·Step 1. download it and deploy this project to HoloLens2 directly.
     ·Step 2. In Unity Editor, go to the top and click : Mixed Reality--> Toolkit --> Untilities --> Configure Project for MRTK --> Apply Settings, this step will help your project re-configure for MRTK and avoid errors.
-    ·Step 3. In Unity Editor, find the scene "SampleScene" in the folder "Scenes", in this scene you can find the gameobject "UDP Communication" as an example
+    ·Step 3. In Unity Editor, find the scene "Sucess_sence" in the folder "Scenes", in this scene you can find the gameobject "UDP Communication" as an example
     ·Step 4. in Arduino editor runnning UDP_test.ino, setting your wifi and IP. upload it to ESP32.
 
 One finding is that the TCP connection reads too slowly, I don't know why. I will be very happy if one day you let me know that you create a better TCP connection.
@@ -21,5 +21,8 @@ Tips:
     ·Step 1. The hololens2 and unity have different codes since they are different platforms. It is hard to debug.          
     ·Step 2. The code has some precompiled code, be careful.
 
-zhongyuan liao
+Zhongyuan Liao
+
+HKUST
+
 2023.11.28
