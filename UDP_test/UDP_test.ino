@@ -1,6 +1,9 @@
 #include <WiFi.h>
 #include <WiFiUdp.h>
 
+#define RXp2 16
+#define TXp2 17
+
 const char* ssid = "SMMG_CAlgroup";
 const char* password = "hkustsmmg";
 
@@ -12,6 +15,7 @@ unsigned int outPort;
 void setup() {
   Serial.begin(115200);
   delay(1000);
+  Serial2.begin(9600, SERIAL_8N1, RXp2, TXp2);
 
   WiFi.begin(ssid, password);
   while (WiFi.status() != WL_CONNECTED) {
@@ -177,6 +181,14 @@ void BundleReadPin(char* packetData) {
 
 void loop() {
   int packetSize = udp.parsePacket();
+  
+  String massage_from_arduino = Serial2.readString(); // 串口通信
+//  udp.beginPacket(serverIP, outPort);
+//  udp.print(massage_from_arduino);
+//  udp.endPacket();
+//  Serial.println(massage_from_arduino);
+//  delay(1000);
+  
   if (packetSize) {
     Serial.print("Received packet of size ");
     Serial.println(packetSize);
@@ -215,8 +227,10 @@ void loop() {
   String message = "Hello from ESP32!";
   udp.beginPacket(serverIP, outPort);
   udp.print(message);
+  udp.print(massage_from_arduino);
   udp.endPacket();
   Serial.println("Sent message: " + message);
+  Serial.println(massage_from_arduino);
 
   delay(5000);
   }

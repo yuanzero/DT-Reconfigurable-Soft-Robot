@@ -26,3 +26,9 @@ Zhongyuan Liao
 HKUST
 
 2023.11.28
+
+
+Plus:
+
+Add serial communication function between Arduino Mega 2560 and ESP32, and the received message can be sent to hololens2.
+reference: https://www.programmingboss.com/2021/04/esp32-arduino-serial-communication-with-code.html#gsc.tab=0
