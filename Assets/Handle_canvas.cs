@@ -20,6 +20,8 @@ public class Handle_canvas : MonoBehaviour
 
     public TrackingCtrlUDP trackingCtrlUDP;
 
+    public Toggle arduinoToggles;     // 用于切换 arduino和esp32 的开关
+
     // Start is called before the first frame update
     void Start()
     {
@@ -133,7 +135,16 @@ public class Handle_canvas : MonoBehaviour
 
     public void send_ESP32()
     {
-        trackingCtrlUDP.SendUDPMessage(trackingCtrlUDP.ServerIP, trackingCtrlUDP.OutPort, "a " + pinNumber.ToString() + " " +
-                analogOutputValue.ToString());
+        if (arduinoToggles.isOn)
+        {
+
+            trackingCtrlUDP.SendUDPMessage(trackingCtrlUDP.ServerIP, trackingCtrlUDP.OutPort, "ma " + pinNumber.ToString() + " " +
+                    analogOutputValue.ToString());
+        }
+        else
+        {
+            trackingCtrlUDP.SendUDPMessage(trackingCtrlUDP.ServerIP, trackingCtrlUDP.OutPort, "a " + pinNumber.ToString() + " " +
+                    analogOutputValue.ToString());
+        }
     }
 }

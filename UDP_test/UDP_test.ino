@@ -215,8 +215,9 @@ void loop() {
     ReadAnalogPin(packetData);
   } else if (packetData[0] == 'br') {
     BundleReadPin(packetData);
-  } else if (packetData[0] == 'b') {
-    
+  } else if (packetData[0] == 'm') {
+    Serial2.println(packetData); // 串口通信
+    Serial.println("send to mega");
   } else {
     // 未知命令处理
     Serial.println("Unknown command");
