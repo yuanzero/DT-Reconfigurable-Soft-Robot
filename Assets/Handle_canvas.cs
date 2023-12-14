@@ -180,10 +180,11 @@ public class Handle_canvas : MonoBehaviour
             {
                 //Debug.Log("Extracted number: " + number);
                 // 在这里可以将number保存下来或进行其他处理
-                
+                number = int.Parse(numberString);
             }
             else
             {
+
                 Debug.Log("Failed to parse the number.");
             }
         }

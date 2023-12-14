@@ -84,7 +84,7 @@ void Start()
 
                 Vector3 tem = GetTrajectoryPoint(trajectoryPoints[i], T);
                 output_cube_position.Add(GetTrajectoryPoint(trajectoryPoints[i], T));
-                Debug.Log("output = " + tem);
+                //Debug.Log("output = " + tem);
             }
         }
         return output_cube_position;
