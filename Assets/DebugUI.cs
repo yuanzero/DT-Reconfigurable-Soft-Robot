@@ -1,8 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using UnityEngine.Profiling;
-using System.IO;
 
 public class DebugUI : MonoBehaviour
 {

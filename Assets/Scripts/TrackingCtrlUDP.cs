@@ -45,8 +45,11 @@ public class TrackingCtrlUDP : TrackingCtrl
 	Thread connectThread; //连接线程
 	int recvLen; //接收的数据长度
 	byte[] sendData = new byte[1024]; //发送的数据，必须为字节
+
+	static UdpClient udp; // 定义udp
+
 #else
-    private readonly Queue<Action> ExecuteOnMainThread = new Queue<Action>();
+	private readonly Queue<Action> ExecuteOnMainThread = new Queue<Action>();
 	DatagramSocket socket;
 #endif
 	void Start()
@@ -57,7 +60,7 @@ public class TrackingCtrlUDP : TrackingCtrl
 	/// <summary>
 	/// everything start from here
 	/// </summary>
-	
+
 
 #if UNITY_EDITOR
 
@@ -74,6 +77,9 @@ public class TrackingCtrlUDP : TrackingCtrl
 
 		//建立初始连接，这句非常重要，第一次连接初始化了serverEnd后面才能收到消息
 		SendUDPMessage(ServerIP, outPort, "Client Ready!");
+
+		//初始化UDP
+		udp = new UdpClient(int.Parse(inPort));
 
 		//开启一个线程连接，必须的，否则主线程卡死
 		connectThread = new Thread(new ThreadStart(Socket_MessageReceived));
@@ -198,6 +204,7 @@ public class TrackingCtrlUDP : TrackingCtrl
 		//进入接收循环
 		while (true)
 		{
+			/*
 			//对data清零
 			msgData = new byte[1024];
 			//获取客户端，获取服务端端数据，用引用给服务端赋值，实际上服务端已经定义好并不需要赋值
@@ -205,6 +212,15 @@ public class TrackingCtrlUDP : TrackingCtrl
 			//print("message from: " + serverEnd.ToString()); //打印服务端信息
 															//输出接收到的数据
 			recvData = Encoding.UTF8.GetString(msgData, 0, recvLen);
+			Debug.Log("Received data length: " + recvLen);
+			Debug.Log("Received data: " + Encoding.UTF8.GetString(msgData, 0, recvLen));	
+			*/
+
+			IPEndPoint remoteEP = null;
+			byte[] data = udp.Receive(ref remoteEP);
+            recvData = Encoding.UTF8.GetString(data);
+            Debug.Log(recvData);
+
 		}
 	}
 #endif

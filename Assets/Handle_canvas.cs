@@ -14,13 +14,15 @@ public class Handle_canvas : MonoBehaviour
     public Toggle[] optionToggles;     // 用于切换引脚模式的按钮
     public Slider analogOutputSlider; // 用于控制引脚模拟输出值的滑块
 
-    private int pinNumber = 13;            // 存储引脚号码
+    private string pinNumber = "13";            // 存储引脚号码
     private bool isOutputMode = true;        // 存储引脚模式（输入或输出）
     private int analogOutputValue;    // 存储引脚模拟输出值
 
     public TrackingCtrlUDP trackingCtrlUDP;
 
     public Toggle arduinoToggles;     // 用于切换 arduino和esp32 的开关
+
+    public TextMeshProUGUI Sensor_Data; //用于显示sensor输入
 
     // Start is called before the first frame update
     void Start()
@@ -54,25 +56,40 @@ public class Handle_canvas : MonoBehaviour
         else
         {
             //int read_data = UduinoManager.Instance.analogRead(pinNumber);
-            trackingCtrlUDP.SendUDPMessage(trackingCtrlUDP.ServerIP, trackingCtrlUDP.OutPort, "r " + pinNumber.ToString());
+            if (arduinoToggles.isOn)
+            {
+
+                trackingCtrlUDP.SendUDPMessage(trackingCtrlUDP.ServerIP, trackingCtrlUDP.OutPort, "mr " + pinNumber);
+            }
+            else
+            {
+
+                trackingCtrlUDP.SendUDPMessage(trackingCtrlUDP.ServerIP, trackingCtrlUDP.OutPort, "r " + pinNumber);
+            }
+
             string read_data = trackingCtrlUDP.Read_data();
             Sensor_reader.text = read_data;
+            if (read_data != null)
+            {
+                Recieve_data_process(read_data);
+            }
+
         }
     }
 
     void OnPinNumberChanged(string pin)
     {
-        pinNumber = int.Parse(pinInputField.text);
+        pinNumber = pinInputField.text;
         // Initialize
         //UduinoManager.Instance.pinMode(pinNumber, PinMode.Output);
-        trackingCtrlUDP.SendUDPMessage(trackingCtrlUDP.ServerIP, trackingCtrlUDP.OutPort, "s " + pinNumber.ToString() + " 0");
+        trackingCtrlUDP.SendUDPMessage(trackingCtrlUDP.ServerIP, trackingCtrlUDP.OutPort, "s " + pinNumber + " 0");
         analogOutputValue = 0;
     }
 
 
     void OnPinModeButtonClick_high()
     {
-        pinNumber = int.Parse(pinInputField.text);
+        pinNumber = pinInputField.text;
 
         if (isOutputMode)
         {
@@ -85,7 +102,7 @@ public class Handle_canvas : MonoBehaviour
 
     void OnPinModeButtonClick_low()
     {
-        pinNumber = int.Parse(pinInputField.text);
+        pinNumber = pinInputField.text;
 
         if (isOutputMode)
         {
@@ -97,7 +114,7 @@ public class Handle_canvas : MonoBehaviour
 
     void OnAnalogOutputSliderValueChanged(float value)
     {
-        pinNumber = int.Parse(pinInputField.text);
+        pinNumber = pinInputField.text;
         analogOutputValue = Mathf.RoundToInt(value * 255);
         send_ESP32();
     }
@@ -138,13 +155,41 @@ public class Handle_canvas : MonoBehaviour
         if (arduinoToggles.isOn)
         {
 
-            trackingCtrlUDP.SendUDPMessage(trackingCtrlUDP.ServerIP, trackingCtrlUDP.OutPort, "ma " + pinNumber.ToString() + " " +
+            trackingCtrlUDP.SendUDPMessage(trackingCtrlUDP.ServerIP, trackingCtrlUDP.OutPort, "ma " + pinNumber + " " +
                     analogOutputValue.ToString());
         }
         else
         {
-            trackingCtrlUDP.SendUDPMessage(trackingCtrlUDP.ServerIP, trackingCtrlUDP.OutPort, "a " + pinNumber.ToString() + " " +
+            trackingCtrlUDP.SendUDPMessage(trackingCtrlUDP.ServerIP, trackingCtrlUDP.OutPort, "a " + pinNumber + " " +
                     analogOutputValue.ToString());
+        }
+    }
+
+    public void Recieve_data_process(string read_data)
+    {
+        string receivedMessage = read_data;
+        string searchString = "read is: ";
+        int startIndex = receivedMessage.IndexOf(searchString);
+        if (startIndex != -1)
+        {
+            startIndex += searchString.Length;
+            string numberString = receivedMessage.Substring(startIndex);
+            int number;
+            Sensor_Data.text = numberString;
+            if (int.TryParse(numberString, out number))
+            {
+                //Debug.Log("Extracted number: " + number);
+                // 在这里可以将number保存下来或进行其他处理
+                
+            }
+            else
+            {
+                Debug.Log("Failed to parse the number.");
+            }
+        }
+        else
+        {
+            Debug.Log("The message does not contain the desired string.");
         }
     }
 }

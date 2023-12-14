@@ -32,7 +32,7 @@ public class PositionSliderHandler_new : MonoBehaviour
     [Tooltip("Set true if using curve control")]
     public bool isCurveControl = false;
 
-    // set reference coor for cureve
+    // set reference coor for curve
     public Transform Curve;
 
 
@@ -43,6 +43,7 @@ public class PositionSliderHandler_new : MonoBehaviour
     // 曲线参数
     public Transform[] controlPoints; // 输入点数组
     public int numPoints = 10; // 等距点数量
+    public int x_Offset = 2;  // 为了曲线显示
 
     private List<Vector3> curvePoints; // 曲线上的点列表
     private List<Vector3> normals; // 法向量列表
@@ -68,6 +69,7 @@ public class PositionSliderHandler_new : MonoBehaviour
         Vector3 p3 = controlPoints[3].localPosition;
 
         BezierCurve curve = new BezierCurve(p0, p1, p2, p3);
+
 
         
 
@@ -113,7 +115,10 @@ public class PositionSliderHandler_new : MonoBehaviour
         // 在场景中绘制曲线
         for (int i = 0; i < curvePoints.Count - 1; i++)
         {
-            Debug.DrawLine(curvePoints[i], curvePoints[i + 1], Color.red);
+            Vector3 startPoint = curvePoints[i] + new Vector3(x_Offset, 0, 0);
+            Vector3 endPoint = curvePoints[i + 1] + new Vector3(x_Offset, 0, 0);
+            Debug.DrawLine(startPoint, endPoint, Color.red);
+            //Debug.DrawLine(curvePoints[i], curvePoints[i + 1], Color.red);
         }
 
         // slider controller
@@ -411,5 +416,6 @@ public class PositionSliderHandler_new : MonoBehaviour
         { angle.z += 360f; } 
         return angle; 
     }
-        
+
+
 }

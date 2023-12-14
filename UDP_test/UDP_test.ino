@@ -27,7 +27,7 @@ void setup() {
   Serial.println("IP address: ");
   Serial.println(WiFi.localIP());
 
-  serverIP = IPAddress(192, 168, 1, 12); // 设置Hololens服务器的IP地址
+  serverIP = IPAddress(192, 168, 1, 11); // 设置Hololens服务器的IP地址
   inPort = 22222; // 设置接收消息的端口号
   outPort = 22224; // 设置发送消息的端口号
 
@@ -182,7 +182,6 @@ void BundleReadPin(char* packetData) {
 void loop() {
   int packetSize = udp.parsePacket();
   
-  String massage_from_arduino = Serial2.readString(); // 串口通信
 //  udp.beginPacket(serverIP, outPort);
 //  udp.print(massage_from_arduino);
 //  udp.endPacket();
@@ -217,22 +216,24 @@ void loop() {
     BundleReadPin(packetData);
   } else if (packetData[0] == 'm') {
     Serial2.println(packetData); // 串口通信
-    Serial.println("send to mega");
+    //Serial.println("send to mega");
   } else {
     // 未知命令处理
     Serial.println("Unknown command");
   }
   
-  }else{
- 
-  String message = "Hello from ESP32!";
-  udp.beginPacket(serverIP, outPort);
-  udp.print(message);
-  udp.print(massage_from_arduino);
-  udp.endPacket();
-  Serial.println("Sent message: " + message);
-  Serial.println(massage_from_arduino);
-
-  delay(5000);
   }
+  
+  String massage_from_arduino = Serial2.readString(); // 串口通信
+  if (!massage_from_arduino.isEmpty()){
+      //String message = "Hello from ESP32!";
+      udp.beginPacket(serverIP, outPort);
+      //udp.print(message);
+      //Serial.println("Sent message: " + message);
+      udp.print(massage_from_arduino);
+      udp.endPacket();
+      Serial.println(massage_from_arduino);
+    
+      delay(1000);
+    }
 }
