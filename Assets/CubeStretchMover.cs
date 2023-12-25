@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine.UI;
 
-public class CubeMover : MonoBehaviour
+public class CubeStretchMover : MonoBehaviour
 {
     // 声明一个变量来存储另一个脚本的实例
-    public CubeSpacePointsFitting cubeSpacePointsFitting;
+    public CubeStretchFitting cubeSpacePointsFitting;
     // 声明一个游戏对象数组来存储需要更新位置的cube
     public GameObject[] cubes;
     public float T = 0.5f;
@@ -16,16 +16,17 @@ public class CubeMover : MonoBehaviour
 
     void Start()
     {
-        
+
     }
     void FixedUpdate()
-    {         
+    {
         if (int.TryParse(Sensor_Data.text, out Sensor_Input))
         {
             //Debug.Log("Extracted number: " + number);
             // 在这里可以将number保存下来或进行其他处理
             Sensor_Input = int.Parse(Sensor_Data.text);
-            T = MapIntToFloat(Sensor_Input, 520, 438, 0.4f, 0.8f); 
+            // the middle two varables are the limit of module input, final two varable are the parameter of curve
+            T = MapIntToFloat(Sensor_Input, 350, 540, 0f, 1f); 
         }
         else
         {

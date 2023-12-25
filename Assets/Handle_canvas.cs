@@ -22,7 +22,7 @@ public class Handle_canvas : MonoBehaviour
 
     public Toggle arduinoToggles;     // 用于切换 arduino和esp32 的开关
 
-    public TextMeshProUGUI Sensor_Data; //用于显示sensor输入
+    public TextMeshProUGUI[] Sensor_Data; //用于显示sensor输入
 
     // Start is called before the first frame update
     void Start()
@@ -41,7 +41,8 @@ public class Handle_canvas : MonoBehaviour
         }
 
         // 激活pin
-       // trackingCtrlUDP.SendUDPMessage(trackingCtrlUDP.ServerIP, trackingCtrlUDP.OutPort, "s 13 0");
+        // trackingCtrlUDP.SendUDPMessage(trackingCtrlUDP.ServerIP, trackingCtrlUDP.OutPort, "s 13 0");
+
 
     }
 
@@ -58,8 +59,9 @@ public class Handle_canvas : MonoBehaviour
             //int read_data = UduinoManager.Instance.analogRead(pinNumber);
             if (arduinoToggles.isOn)
             {
+                //trackingCtrlUDP.SendUDPMessage(trackingCtrlUDP.ServerIP, trackingCtrlUDP.OutPort, "mr " + pinNumber);
+               
 
-                trackingCtrlUDP.SendUDPMessage(trackingCtrlUDP.ServerIP, trackingCtrlUDP.OutPort, "mr " + pinNumber);
             }
             else
             {
@@ -74,6 +76,19 @@ public class Handle_canvas : MonoBehaviour
                 Recieve_data_process(read_data);
             }
 
+        }
+    }
+
+    IEnumerator SendUDPMessagesWithDelay()
+    {
+        while (!isOutputMode)
+        {
+            trackingCtrlUDP.SendUDPMessage(trackingCtrlUDP.ServerIP, trackingCtrlUDP.OutPort, "mr " + "A0");
+            yield return new WaitForSeconds(0.25f);
+            trackingCtrlUDP.SendUDPMessage(trackingCtrlUDP.ServerIP, trackingCtrlUDP.OutPort, "mr " + "A1");
+            yield return new WaitForSeconds(0.25f);
+            trackingCtrlUDP.SendUDPMessage(trackingCtrlUDP.ServerIP, trackingCtrlUDP.OutPort, "mr " + "A2");
+            yield return new WaitForSeconds(0.25f);
         }
     }
 
@@ -143,6 +158,9 @@ public class Handle_canvas : MonoBehaviour
                         //UduinoManager.Instance.pinMode(pinNumber, PinMode.Input);
                         trackingCtrlUDP.SendUDPMessage(trackingCtrlUDP.ServerIP, trackingCtrlUDP.OutPort, "s 13 1");
                         Debug.Log("Option 2 is selected.");
+
+                        StartCoroutine(SendUDPMessagesWithDelay()); //激活循环读取
+
                         break;
                         // 可以继续添加其他选项的操作
                 }
@@ -167,7 +185,42 @@ public class Handle_canvas : MonoBehaviour
 
     public void Recieve_data_process(string read_data)
     {
-        string receivedMessage = read_data;
+        string message = read_data;
+        string[] words = message.Split(' ', '\n'); // 以空格分割字符串
+        int index = -1;
+        for (int i = 0; i < words.Length; i++)
+        {
+            if (words[i] == "readpin")
+            {
+                index = i;
+                break;
+            }
+        }
+        if (index != -1 && index + 2 < words.Length) // 确保找到了readpin并且后面有足够的数据
+        {
+            string Pin = words[index + 1]; // 获取第一个数据
+            string PinData = words[index + 2]; // 获取第二个数据
+
+            if (Pin == "A0\r")
+            {
+                Sensor_Data[0].text = PinData;
+            }
+            else if (Pin == "A1\r")
+            {
+                Sensor_Data[1].text = PinData;
+            }
+            else if (Pin == "A2\r")
+            {
+                Sensor_Data[2].text = PinData;
+            }
+            else
+            {
+                //Debug.Log("Pin: " + Pin + " " + PinData);
+            }
+            
+        }
+
+        /*
         string searchString = "read is: ";
         int startIndex = receivedMessage.IndexOf(searchString);
         if (startIndex != -1)
@@ -184,7 +237,6 @@ public class Handle_canvas : MonoBehaviour
             }
             else
             {
-
                 Debug.Log("Failed to parse the number.");
             }
         }
@@ -192,5 +244,6 @@ public class Handle_canvas : MonoBehaviour
         {
             Debug.Log("The message does not contain the desired string.");
         }
+        */
     }
 }

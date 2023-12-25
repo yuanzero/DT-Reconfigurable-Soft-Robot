@@ -105,20 +105,55 @@ void WritePinDigital(char* packetData) {
   }
 }
 
+//void ReadAnalogPin(char* packetData) {
+//  int pinToRead = -1;
+//  char *arg = strtok(packetData, " ");
+//  arg = strtok(NULL, " ");
+//  if (arg != NULL)
+//  {
+//    pinToRead = atoi(arg);
+//    if (pinToRead != -1)
+//      analogRead(pinToRead);
+//  }
+//  
+//  String message = "readpin " + String(pinToRead) + " " + analogRead(pinToRead) ;
+//  Serial.print( "readpin is: " );
+//  Serial.println( arg );
+//  //Serial.println( message );
+//  Serial.print( "read is: " );
+//  Serial.println( analogRead(arg) );
+//}
+
 void ReadAnalogPin(char* packetData) {
   int pinToRead = -1;
   char *arg = strtok(packetData, " ");
   arg = strtok(NULL, " ");
   if (arg != NULL)
   {
-    pinToRead = atoi(arg);
-    if (pinToRead != -1)
-      analogRead(pinToRead);
+      if (arg[0] == 'A' && isdigit(arg[1])) { // 检查是否是A0、A1等格式
+          int analogPinNumber = atoi(arg + 1); // 从第二个字符开始转换为整数
+          if (analogPinNumber >= 0 && analogPinNumber <= 15) {
+              pinToRead = analogPinNumber + 54; // 将A0到A15映射为对应的数字引脚编号
+          }
+      } else if (isdigit(arg[0])) { // 检查是否是数字开头的引脚
+          pinToRead = atoi(arg); // 直接将字符转换为整数
+      }
+      
+      if (pinToRead != -1) {
+          int value = analogRead(pinToRead); // 读取引脚的值
+          
+          // 处理读取的值
+          String message = "readpin " + String(arg) + " " + analogRead(pinToRead);
+          message.replace("\n", ""); // 用空字符串替换换行符
+          message.replace("  ", " "); // 用空字符串替换换行符
+          Serial.println( message );
+//          Serial.print( "readpin is: " );
+//          Serial.println( arg );
+//          //Serial.println( message );
+//          Serial.print( "read is: " );
+//          Serial.println( value );
+      }
   }
-  
-  String message = "readpin " + String(pinToRead) + " " + analogRead(pinToRead) ;
-  Serial.print( "read is: " );
-  Serial.println( analogRead(pinToRead) );
 }
 
 void ReadDigitalPin(char* packetData) {

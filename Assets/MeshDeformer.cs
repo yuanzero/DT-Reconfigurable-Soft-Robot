@@ -1,23 +1,36 @@
-
 using UnityEngine;
+using TMPro;
+using UnityEngine.UI;
 
 public class MeshDeformer : MonoBehaviour
 {
     public GameObject targetCube;
+    public GameObject followObject; // 需要跟随的物体
     public float intensity = 1f;
     public float angle = 45f;
+    private float angle_pre;
     public Vector3 axis = Vector3.up;
 
     private Mesh mesh;
     private Vector3[] originalVertices;
+    private Quaternion followObjectRotation; // 记录跟随物体的初始旋转
+
+    public float T = 0f;
+    public TextMeshProUGUI Sensor_Data; //用于显示sensor输入
+    int Sensor_Input;
 
     void Start()
     {
         mesh = targetCube.GetComponent<MeshFilter>().mesh;
         originalVertices = mesh.vertices;
+
+        angle_pre = angle;
+
+        // 记录跟随物体的初始旋转
+        followObjectRotation = followObject.transform.localRotation;
     }
 
-    void Update()
+    void FixedUpdate()
     {
         Quaternion rotation = Quaternion.AngleAxis(angle, axis);
 
@@ -26,7 +39,6 @@ public class MeshDeformer : MonoBehaviour
         for (int i = 0; i < originalVertices.Length; i++)
         {
             Vector3 vertex = originalVertices[i];
-            Vector3 vertexWorldPos = targetCube.transform.TransformPoint(vertex);
 
             // Rotate the vertex if it belongs to the bottom face
             if (vertex.y < 0f)
@@ -35,78 +47,50 @@ public class MeshDeformer : MonoBehaviour
             }
 
             // Calculate the scaling factor for each vertex based on its original and rotated positions
-            float scale = CalculateScalingFactor(vertex, vertexWorldPos);
+            float scale = CalculateScalingFactor(vertex);
 
             // Scale the vertex position based on the scaling factor
-            deformedVertices[i] = vertexWorldPos + (vertex - vertexWorldPos) * scale * intensity;
+            deformedVertices[i] = vertex * scale * intensity;
         }
 
         mesh.vertices = deformedVertices;
         mesh.RecalculateNormals();
-    }
 
-    // Calculate the scaling factor for a vertex based on its original position and the current position
-    float CalculateScalingFactor(Vector3 originalVertex, Vector3 currentVertex)
-    {
-        float originalArea = Mathf.Abs(originalVertex.x * originalVertex.z);
-        float currentArea = Mathf.Abs(currentVertex.x * currentVertex.z);
-        return Mathf.Sqrt(originalArea / currentArea);
-    }
-}
+        // 将旋转操作应用于跟随物体的局部旋转
+        followObject.transform.localRotation = followObjectRotation * Quaternion.AngleAxis(angle, axis);
 
-/*
-using UnityEngine;
 
-public class MeshDeformer : MonoBehaviour
-{
-    public GameObject targetModel;
-    public float intensity = 1f;
-    public float angle = 45f;
-    public Vector3 axis = Vector3.up;
-
-    private Mesh mesh;
-    private Vector3[] originalVertices;
-
-    void Start()
-    {
-        mesh = targetModel.GetComponent<MeshFilter>().mesh;
-        originalVertices = mesh.vertices;
-    }
-
-    void Update()
-    {
-        Quaternion rotation = Quaternion.AngleAxis(angle, axis);
-
-        Vector3[] deformedVertices = new Vector3[originalVertices.Length];
-
-        for (int i = 0; i < originalVertices.Length; i++)
+        // 读取sensor
+        if (int.TryParse(Sensor_Data.text, out Sensor_Input))
         {
-            Vector3 vertex = originalVertices[i];
-            Vector3 vertexWorldPos = targetModel.transform.TransformPoint(vertex);
-
-            // Rotate the vertex if it belongs to the bottom face
-            if (vertex.y < 0f)
-            {
-                vertex = rotation * vertex;
-            }
-
-            // Calculate the scaling factor for each vertex based on its original and rotated positions
-            float scale = CalculateScalingFactor(vertex, vertexWorldPos);
-
-            // Scale the vertex position based on the scaling factor
-            deformedVertices[i] = vertexWorldPos + (vertex - vertexWorldPos) * scale * intensity;
+            //Debug.Log("Extracted number: " + number);
+            // 在这里可以将number保存下来或进行其他处理
+            Sensor_Input = int.Parse(Sensor_Data.text);
+            // the middle two varables are the limit of module input, final two varable are the parameter of curve
+            T = MapIntToFloat(Sensor_Input, 600, 800, 0f, 15f);
+            angle = angle_pre + T;
         }
-
-        mesh.vertices = deformedVertices;
-        mesh.RecalculateNormals();
+        else
+        {
+            //Debug.Log("Failed to parse the number.");
+        }
     }
 
     // Calculate the scaling factor for a vertex based on its original position and the current position
-    float CalculateScalingFactor(Vector3 originalVertex, Vector3 currentVertex)
+    float CalculateScalingFactor(Vector3 originalVertex)
     {
+        Vector3 currentVertex = transform.TransformPoint(originalVertex);
         float originalArea = Mathf.Abs(originalVertex.x * originalVertex.z);
         float currentArea = Mathf.Abs(currentVertex.x * currentVertex.z);
         return Mathf.Sqrt(originalArea / currentArea);
     }
+
+    float MapIntToFloat(int intValue, int minValue, int maxValue, float minMappedValue, float maxMappedValue)
+    {
+        float mappedValue = Mathf.InverseLerp(minValue, maxValue, intValue);
+        float result = Mathf.Lerp(minMappedValue, maxMappedValue, mappedValue);
+        return result;
+    }
+
+
 }
-*/

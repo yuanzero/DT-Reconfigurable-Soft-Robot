@@ -27,7 +27,7 @@ void setup() {
   Serial.println("IP address: ");
   Serial.println(WiFi.localIP());
 
-  serverIP = IPAddress(192, 168, 1, 12); // 设置Hololens服务器的IP地址
+  serverIP = IPAddress(192, 168, 1, 11); // 设置Hololens服务器的IP地址
   inPort = 22222; // 设置接收消息的端口号
   outPort = 22224; // 设置发送消息的端口号
 
@@ -199,7 +199,7 @@ void loop() {
     Serial.print("Received message: ");
     Serial.println(packetData);
     
-    delay(1000);
+    delay(100);
 
     // 解析命令并执行相应的操作
   if (packetData[0] == 's') {
@@ -234,6 +234,6 @@ void loop() {
       udp.endPacket();
       Serial.println(massage_from_arduino);
     
-      delay(1000);
+      delay(100);
     }
 }

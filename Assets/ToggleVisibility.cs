@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 public class ToggleVisibility : MonoBehaviour
 {
-    public GameObject targetObject; // 需要隐藏/显示的物体
+    public GameObject[] targetObject; // 需要隐藏/显示的物体
 
     private void Start()
     {
@@ -15,7 +15,10 @@ public class ToggleVisibility : MonoBehaviour
 
     private void OnToggleValueChanged(bool value)
     {
-        SetRenderersVisibility(targetObject, value);
+        for (int i = 0; i < targetObject.Length; i++)
+        {
+            SetRenderersVisibility(targetObject[i], value);
+        }
     }
 
     private void SetRenderersVisibility(GameObject obj, bool value)
