@@ -79,9 +79,12 @@ public class MeshDeformer : MonoBehaviour
     // Calculate the scaling factor for a vertex based on its original position and the current position
     float CalculateScalingFactor(Vector3 originalVertex)
     {
-        Vector3 currentVertex = transform.TransformPoint(originalVertex);
-        float originalArea = Mathf.Abs(originalVertex.x * originalVertex.z);
-        float currentArea = Mathf.Abs(currentVertex.x * currentVertex.z);
+        Vector3 scaledOriginalVertex = Vector3.Scale(originalVertex, transform.localScale); // 考虑到物体的缩放因子
+        Vector3 worldPosition = transform.TransformPoint(scaledOriginalVertex); // 将局部坐标转换为世界坐标
+        Vector3 localPosition = transform.InverseTransformPoint(worldPosition); // 将世界坐标转换为局部坐标
+
+        float originalArea = Mathf.Abs(scaledOriginalVertex.x * scaledOriginalVertex.z);
+        float currentArea = Mathf.Abs(localPosition.x * localPosition.z);
         return Mathf.Sqrt(originalArea / currentArea);
     }
 

@@ -26,7 +26,7 @@ public class CubeStretchMover : MonoBehaviour
             // 在这里可以将number保存下来或进行其他处理
             Sensor_Input = int.Parse(Sensor_Data.text);
             // the middle two varables are the limit of module input, final two varable are the parameter of curve
-            T = MapIntToFloat(Sensor_Input, 350, 540, 0f, 1f); 
+            T = MapIntToFloat(Sensor_Input, 420, 640, 0f, 1f); 
         }
         else
         {

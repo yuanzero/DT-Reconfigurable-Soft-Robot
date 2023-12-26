@@ -84,11 +84,11 @@ public class Handle_canvas : MonoBehaviour
         while (!isOutputMode)
         {
             trackingCtrlUDP.SendUDPMessage(trackingCtrlUDP.ServerIP, trackingCtrlUDP.OutPort, "mr " + "A0");
-            yield return new WaitForSeconds(0.25f);
+            yield return new WaitForSeconds(0.2f);
             trackingCtrlUDP.SendUDPMessage(trackingCtrlUDP.ServerIP, trackingCtrlUDP.OutPort, "mr " + "A1");
-            yield return new WaitForSeconds(0.25f);
+            yield return new WaitForSeconds(0.2f);
             trackingCtrlUDP.SendUDPMessage(trackingCtrlUDP.ServerIP, trackingCtrlUDP.OutPort, "mr " + "A2");
-            yield return new WaitForSeconds(0.25f);
+            yield return new WaitForSeconds(0.2f);
         }
     }
 
