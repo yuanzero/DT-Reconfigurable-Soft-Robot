@@ -230,8 +230,12 @@ public class TrackingCtrlUDP : TrackingCtrl
 		SendUDPMessage(ServerIP, OutPort, Command_Input.text);
 	}
 
+	public void Send_op_outside(string Command_outside)
+	{
+		SendUDPMessage(ServerIP, OutPort, Command_outside);
+	}
 
-    public String Read_data()
+	public String Read_data()
     {
 		return recvData;
 	}

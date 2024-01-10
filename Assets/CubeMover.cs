@@ -2,6 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine.UI;
+using Microsoft.MixedReality.Toolkit.UI;
 
 public class CubeMover : MonoBehaviour
 {
@@ -13,23 +14,32 @@ public class CubeMover : MonoBehaviour
     List<Vector3> trajectoryPoints;
     public TextMeshProUGUI Sensor_Data; //用于显示sensor输入
     int Sensor_Input;
+    public bool isSliderControl = false;
+    public PinchSlider pinchSlider; // 用于user输入
 
     void Start()
     {
         
     }
     void FixedUpdate()
-    {         
-        if (int.TryParse(Sensor_Data.text, out Sensor_Input))
+    {
+        if (isSliderControl)
         {
-            //Debug.Log("Extracted number: " + number);
-            // 在这里可以将number保存下来或进行其他处理
-            Sensor_Input = int.Parse(Sensor_Data.text);
-            T = MapIntToFloat(Sensor_Input, 520, 438, 0.4f, 0.8f); 
+            T = pinchSlider.SliderValue;
         }
         else
         {
-            //Debug.Log("Failed to parse the number.");
+            if (int.TryParse(Sensor_Data.text, out Sensor_Input))
+            {
+                //Debug.Log("Extracted number: " + number);
+                // 在这里可以将number保存下来或进行其他处理
+                Sensor_Input = int.Parse(Sensor_Data.text);
+                T = MapIntToFloat(Sensor_Input, 520, 438, 0.4f, 0.8f);
+            }
+            else
+            {
+                //Debug.Log("Failed to parse the number.");
+            }
         }
 
 

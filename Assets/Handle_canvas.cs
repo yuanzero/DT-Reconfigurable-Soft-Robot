@@ -22,6 +22,8 @@ public class Handle_canvas : MonoBehaviour
 
     public Toggle arduinoToggles;     // 用于切换 arduino和esp32 的开关
 
+    public Toggle keep_reading;     // 用于切换 一直读取 的开关
+
     public TextMeshProUGUI[] Sensor_Data; //用于显示sensor输入
 
     // Start is called before the first frame update
@@ -39,6 +41,8 @@ public class Handle_canvas : MonoBehaviour
         {
             toggle.onValueChanged.AddListener(OnToggleValueChanged);
         }
+
+        keep_reading.onValueChanged.AddListener(OnKeepreadingChanged);
 
         // 激活pin
         // trackingCtrlUDP.SendUDPMessage(trackingCtrlUDP.ServerIP, trackingCtrlUDP.OutPort, "s 13 0");
@@ -67,28 +71,29 @@ public class Handle_canvas : MonoBehaviour
             {
 
                 trackingCtrlUDP.SendUDPMessage(trackingCtrlUDP.ServerIP, trackingCtrlUDP.OutPort, "r " + pinNumber);
-            }
+            }                   
 
-            string read_data = trackingCtrlUDP.Read_data();
-            Sensor_reader.text = read_data;
-            if (read_data != null)
-            {
-                Recieve_data_process(read_data);
-            }
+        }
 
+        string read_data = trackingCtrlUDP.Read_data();
+        Sensor_reader.text = read_data;
+        if (read_data != null)
+        {
+            Recieve_data_process(read_data);
         }
     }
 
     IEnumerator SendUDPMessagesWithDelay()
     {
-        while (!isOutputMode)
+        while (keep_reading.isOn)
         {
+            //Debug.Log("keep_reading.isOn.");
             trackingCtrlUDP.SendUDPMessage(trackingCtrlUDP.ServerIP, trackingCtrlUDP.OutPort, "mr " + "A0");
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.5f);
             trackingCtrlUDP.SendUDPMessage(trackingCtrlUDP.ServerIP, trackingCtrlUDP.OutPort, "mr " + "A1");
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.5f);
             trackingCtrlUDP.SendUDPMessage(trackingCtrlUDP.ServerIP, trackingCtrlUDP.OutPort, "mr " + "A2");
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.5f);
         }
     }
 
@@ -158,13 +163,18 @@ public class Handle_canvas : MonoBehaviour
                         //UduinoManager.Instance.pinMode(pinNumber, PinMode.Input);
                         trackingCtrlUDP.SendUDPMessage(trackingCtrlUDP.ServerIP, trackingCtrlUDP.OutPort, "s 13 1");
                         Debug.Log("Option 2 is selected.");
-
-                        StartCoroutine(SendUDPMessagesWithDelay()); //激活循环读取
-
                         break;
                         // 可以继续添加其他选项的操作
                 }
             }
+        }
+    }
+
+    private void OnKeepreadingChanged(bool value)
+    {
+        if (keep_reading.isOn)
+        {
+            StartCoroutine(SendUDPMessagesWithDelay()); // Activate reading loop in a secondary thread
         }
     }
 
@@ -246,4 +256,32 @@ public class Handle_canvas : MonoBehaviour
         }
         */
     }
+
+    //use for Pin's high/low switch
+    public void send_ESP32_HIGH(string pinNumber)
+    {
+        if (arduinoToggles.isOn)
+        {
+
+            trackingCtrlUDP.SendUDPMessage(trackingCtrlUDP.ServerIP, trackingCtrlUDP.OutPort, "ma " + pinNumber + " 255");
+        }
+        else
+        {
+            trackingCtrlUDP.SendUDPMessage(trackingCtrlUDP.ServerIP, trackingCtrlUDP.OutPort, "a " + pinNumber + " 255");
+        }
+    }
+
+    public void send_ESP32_LOW(string pinNumber)
+    {
+        if (arduinoToggles.isOn)
+        {
+
+            trackingCtrlUDP.SendUDPMessage(trackingCtrlUDP.ServerIP, trackingCtrlUDP.OutPort, "ma " + pinNumber + " 0");
+        }
+        else
+        {
+            trackingCtrlUDP.SendUDPMessage(trackingCtrlUDP.ServerIP, trackingCtrlUDP.OutPort, "a " + pinNumber + " 0");
+        }
+    }
+
 }

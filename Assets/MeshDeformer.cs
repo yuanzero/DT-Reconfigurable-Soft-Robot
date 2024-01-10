@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using Microsoft.MixedReality.Toolkit.UI;
 
 public class MeshDeformer : MonoBehaviour
 {
@@ -18,6 +19,9 @@ public class MeshDeformer : MonoBehaviour
     public float T = 0f;
     public TextMeshProUGUI Sensor_Data; //用于显示sensor输入
     int Sensor_Input;
+
+    public bool isSliderControl = false;
+    public PinchSlider pinchSlider; // 用于user输入
 
     void Start()
     {
@@ -59,20 +63,27 @@ public class MeshDeformer : MonoBehaviour
         // 将旋转操作应用于跟随物体的局部旋转
         followObject.transform.localRotation = followObjectRotation * Quaternion.AngleAxis(angle, axis);
 
-
-        // 读取sensor
-        if (int.TryParse(Sensor_Data.text, out Sensor_Input))
+        if (isSliderControl)
         {
-            //Debug.Log("Extracted number: " + number);
-            // 在这里可以将number保存下来或进行其他处理
-            Sensor_Input = int.Parse(Sensor_Data.text);
-            // the middle two varables are the limit of module input, final two varable are the parameter of curve
-            T = MapIntToFloat(Sensor_Input, 600, 800, 0f, 15f);
+            float T = Mathf.Lerp(0f, 30f, pinchSlider.SliderValue);
             angle = angle_pre + T;
         }
         else
         {
-            //Debug.Log("Failed to parse the number.");
+            // 读取sensor
+            if (int.TryParse(Sensor_Data.text, out Sensor_Input))
+            {
+                //Debug.Log("Extracted number: " + number);
+                // 在这里可以将number保存下来或进行其他处理
+                Sensor_Input = int.Parse(Sensor_Data.text);
+                // the middle two varables are the limit of module input, final two varable are the parameter of curve
+                T = MapIntToFloat(Sensor_Input, 600, 800, 0f, 30f);
+                angle = angle_pre + T;
+            }
+            else
+            {
+                //Debug.Log("Failed to parse the number.");
+            }
         }
     }
 
