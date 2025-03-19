@@ -4,7 +4,7 @@ Welcome to this code repository, designed to support the implementation of the r
 
 In the rapidly evolving field of soft robotics, advancements in new materials, structural designs, and conceptual frameworks have propelled the rise of soft robot technology, particularly towards a highly versatile modular architecture with vast potential applications across various industries. However, one of the main challenges in this domain is the shape-morphing issue, as existing visualization and simulation tools struggle to adequately represent the complex and continuous deformation behaviors of soft robots. Furthermore, there is a distinct lack of intuitive, user-friendly platforms for visualizing and interactively controlling the shape-shifting capabilities of these robots.
 
-In response to these challenges, this paper introduces an innovative Digital Twin (DT) system specifically designed for reconfigurable soft robots, operating within an Augmented Reality (AR) environment. This system facilitates a more natural and accurate depiction of 3D soft deformations while providing an intuitive interface for simulation. We utilize a parameterized curve-driven method to dynamically adapt the DT in the AR space, ensuring smooth transitions between various 3D shape-morphing states. We identify three fundamental shape-morphing patterns—stretching, bending, and twisting—and create advanced visualization tools to precisely demonstrate these morphological changes.
+In response to these challenges, this paper introduces an innovative Digital Twin (DT) system specifically designed for reconfigurable soft robots, operating within an Augmented Reality (AR) environment. This system facilitates a more natural and accurate depiction of 3D soft deformations while providing an intuitive interface for simulation. We utilize a parameterized curve-driven method to dynamically adapt the DT in the AR space, ensuring smooth transitions between various 3D shape-morphing states. We identify three fundamental shape-morphing patterns—stretching, bending, and twisting—and create advanced visualization tools to precisely demonstrate these morphological changes. 
 
 To enhance real-time representation of shape-morphing, we employ sensor fusion to detect and depict the soft robot's structural changes as parameterized curves. Our system is fully operational in an AR environment, empowering users to conduct immersive examinations and simulate reconfigurations of real-world soft robotic systems. The source code will be released after it has been organized.
 
@@ -15,6 +15,12 @@ This project is a HoloLens2-compatible MRTK template, integrated with UDP web mo
 - Unity 2020.3.42f1 (LTS)
 - OpenXR features
 - Windows Mixed Reality Toolkit (MRTK) 2.7.2
+
+## 3D Models
+
+The required 3D models for the project can be found in the following zip file:
+
+- [Download liao_model.zip](<insert-your-link-here>)
 
 ## User Guide
 
