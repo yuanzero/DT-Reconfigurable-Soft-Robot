@@ -8,7 +8,17 @@ In response to these challenges, this paper introduces an innovative Digital Twi
 
 To enhance real-time representation of shape-morphing, we employ sensor fusion to detect and depict the soft robot's structural changes as parameterized curves. Our system is fully operational in an AR environment, empowering users to conduct immersive examinations and simulate reconfigurations of real-world soft robotic systems. The source code will be released after it has been organized.
 
+## Framework
+
 ![image](https://github.com/user-attachments/assets/71f707f9-2e47-4f6d-9508-94a39ea0f753)
+
+## Demo
+
+
+
+https://github.com/user-attachments/assets/19ca5b17-90c0-46e3-80ee-d75cc41bc1d9
+
+
 
 ## Project Overview
 
