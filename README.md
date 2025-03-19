@@ -8,6 +8,8 @@ In response to these challenges, this paper introduces an innovative Digital Twi
 
 To enhance real-time representation of shape-morphing, we employ sensor fusion to detect and depict the soft robot's structural changes as parameterized curves. Our system is fully operational in an AR environment, empowering users to conduct immersive examinations and simulate reconfigurations of real-world soft robotic systems. The source code will be released after it has been organized.
 
+![image](https://github.com/user-attachments/assets/71f707f9-2e47-4f6d-9508-94a39ea0f753)
+
 ## Project Overview
 
 This project is a HoloLens2-compatible MRTK template, integrated with UDP web modules, based on the following technologies:
