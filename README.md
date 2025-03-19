@@ -21,11 +21,11 @@ This project is a HoloLens2-compatible MRTK template, integrated with UDP web mo
 1. **Download the project** and deploy it directly to HoloLens2.
 2. In the Unity Editor, navigate to the top menu: Mixed Reality -> Toolkit -> Utilities -> Configure Project for MRTK -> Apply Settings. This step will help reconfigure your project for MRTK and avoid errors.
 3. In the Unity Editor, locate the scene "Success_scene" in the "Scenes" folder. In this scene, you will find the game object "UDP Communication" as an example.
-4. In the Arduino editor, run `UDP_test.ino`, set your Wi-Fi and IP address, and upload it to the ESP32.
+4. In the Arduino and ESP32 file, set your Wi-Fi and IP address, and upload it to the hardware.
 
 For any questions or feedback, please contact:
 
 **Zhongyuan Liao**  
 **Hong Kong University of Science and Technology (HKUST)**  
 
-Thank you for your interest, and we look forward to your contributions and collaboration!
+Thank you for your interest!
