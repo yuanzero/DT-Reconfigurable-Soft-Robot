@@ -4,8 +4,8 @@
 #define RXp2 16
 #define TXp2 17
 
-const char* ssid = "SMMG_CAlgroup";
-const char* password = "hkustsmmg";
+const char* ssid = "WiFi-name";
+const char* password = "password";
 
 WiFiUDP udp;
 IPAddress serverIP;
