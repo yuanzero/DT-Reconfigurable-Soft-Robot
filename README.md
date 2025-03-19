@@ -20,7 +20,7 @@ This project is a HoloLens2-compatible MRTK template, integrated with UDP web mo
 
 The required 3D models for the project can be found in the following zip file:
 
-- [Download liao_model.zip](<insert-your-link-here>)
+- [Download liao_model.zip](<https://github.com/yuanzero/DT-Reconfigurable-Soft-Robot/blob/master/liao_model.rar>)
 
 ## User Guide
 
