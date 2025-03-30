@@ -1,6 +1,6 @@
 # DT-Reconfigurable-Soft-Robot
 
-Welcome to this code repository, designed to support the implementation of the research paper titled "An Augmented Reality-enabled Digital Twin System for Reconfigurable Soft Robots: Visualization, Simulation, and Interaction," which has been published in the journal *Computers in Industry*.
+Welcome to this code repository, designed to support the implementation of the research paper titled "[An Augmented Reality-enabled Digital Twin System for Reconfigurable Soft Robots: Visualization, Simulation, and Interaction](<https://www.sciencedirect.com/science/article/pii/S0166361525000508>)", which has been published in the journal *Computers in Industry*.
 
 In the rapidly evolving field of soft robotics, advancements in new materials, structural designs, and conceptual frameworks have propelled the rise of soft robot technology, particularly towards a highly versatile modular architecture with vast potential applications across various industries. However, one of the main challenges in this domain is the shape-morphing issue, as existing visualization and simulation tools struggle to adequately represent the complex and continuous deformation behaviors of soft robots. Furthermore, there is a distinct lack of intuitive, user-friendly platforms for visualizing and interactively controlling the shape-shifting capabilities of these robots.
 
